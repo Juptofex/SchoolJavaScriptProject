@@ -107,3 +107,7 @@ form input {
 .error-message ul {
   list-style: none;
 }
+
+#colored_list {
+  color: red;
+}
