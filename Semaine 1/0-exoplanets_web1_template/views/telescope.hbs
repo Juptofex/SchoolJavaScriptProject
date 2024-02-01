@@ -1,0 +1,24 @@
+<section>
+    <h1>Liste des Téléscopes</h1>
+    <table>
+        <tr>
+            <th>
+                Nom
+            </th>
+            <th>
+                Pays
+            </th>
+            <th>
+                Diamètre
+            </th>
+        </tr>
+        {{#each teleTable}}
+            <tr>
+                {{#each this}}
+                    <td>{{this}}</td>
+                {{/each}}
+            </tr>
+        {{/each}}
+    </table>
+    {{error}}
+</section>
