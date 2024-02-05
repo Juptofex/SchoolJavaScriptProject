@@ -9,6 +9,7 @@ const trappist_1_d = {id : incr(id), uniqueName : "TRAPPIST-1-d", hClass : "Més
 const koi_1686_01 = {id : incr(id), uniqueName : "KOI-1686.01", hClass : "Mésoplanète", discoveryYear : 2011, IST : "0,89", pClass : "Super-terrienne chaude"}
 const lhs_1723_b = {id : incr(id), uniqueName : "LHS 1723 b", hClass : "Mésoplanète", discoveryYear : 2017, IST : "0,89", pClass : "Super-terrienne chaude"}
 let exop = [trappist_1_d, koi_1686_01, lhs_1723_b];
+let same_exo='';
 
 /* GET home page. */
 router.get('/', (req, res) => {
@@ -47,13 +48,25 @@ router.get('/telescope', (req, res) => {
 })
 
 router.get('/exoplanetes', (req, res) => {
-  res.render('exoplanetes.hbs', {exop});
+  res.render('exoplanetes.hbs', {exop, same_exo});
 })
 
 router.post('/exoplanetes/add',  function (req, res, next) {
   let exoplanete_x = {id : exop.length+1, uniqueName : req.body.ename, hClass : req.body.eclass, discoveryYear : req.body.eannee}
   exop.push(exoplanete_x);
   res.redirect('/exoplanetes')
+})
+
+router.post('/exoplanetes/search', function(req, res, next) {
+  same_exo='';
+  for (let index = 0; index < 5; index++) {
+    if ( req.body.rech_exo==exop[index].uniqueName) {
+      same_exo=exop[index].uniqueName;
+      res.redirect('/exoplanetes');
+    }else{
+      res.redirect('/exoplanetes');
+    }
+  }
 })
 
 module.exports = router;
