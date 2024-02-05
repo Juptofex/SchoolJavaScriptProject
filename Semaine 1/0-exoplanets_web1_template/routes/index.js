@@ -54,7 +54,7 @@ router.post('/exoplanetes/add',  function (req, res, next) {
   let exop = [trappist_1_d, koi_1686_01, lhs_1723_b];
   let exoplanete_x = {id : exop.length+1, uniqueName : req.body.ename, hClass : req.body.eclass, discoveryYear : req.body.eannee}
   exop.push(exoplanete_x);
-  res.render('/exoplanetes')
+  res.redirect('/exoplanetes')
 })
 
 module.exports = router;
