@@ -8,6 +8,7 @@ function incr(i) {
 const trappist_1_d = {id : incr(id), uniqueName : "TRAPPIST-1-d", hClass : "Mésoplanète", discoveryYear : 2016, IST : "0,90", pClass : "Sous-terrienne chaude"}
 const koi_1686_01 = {id : incr(id), uniqueName : "KOI-1686.01", hClass : "Mésoplanète", discoveryYear : 2011, IST : "0,89", pClass : "Super-terrienne chaude"}
 const lhs_1723_b = {id : incr(id), uniqueName : "LHS 1723 b", hClass : "Mésoplanète", discoveryYear : 2017, IST : "0,89", pClass : "Super-terrienne chaude"}
+let exop = [trappist_1_d, koi_1686_01, lhs_1723_b];
 
 /* GET home page. */
 router.get('/', (req, res) => {
@@ -46,7 +47,6 @@ router.get('/telescope', (req, res) => {
 })
 
 router.get('/exoplanetes', (req, res) => {
-  let exop = [trappist_1_d, koi_1686_01, lhs_1723_b];
   res.render('exoplanetes.hbs', {exop});
 })
 
