@@ -10,6 +10,7 @@ const koi_1686_01 = {id : incr(id), uniqueName : "KOI-1686.01", hClass : "Mésop
 const lhs_1723_b = {id : incr(id), uniqueName : "LHS 1723 b", hClass : "Mésoplanète", discoveryYear : 2017, IST : "0,89", pClass : "Super-terrienne chaude"}
 let exop = [trappist_1_d, koi_1686_01, lhs_1723_b];
 let same_exo='';
+let exo_detail=null;
 
 /* GET home page. */
 router.get('/', (req, res) => {
@@ -48,7 +49,7 @@ router.get('/telescope', (req, res) => {
 })
 
 router.get('/exoplanetes', (req, res) => {
-  res.render('exoplanetes.hbs', {exop, same_exo});
+  res.render('exoplanetes.hbs', {exop, same_exo, exo_detail});
 })
 
 router.post('/exoplanetes/add',  function (req, res, next) {
@@ -64,9 +65,9 @@ router.post('/exoplanetes/search', function(req, res, next) {
   for (let index = 0; index < exop.length; index++) {
     let n = 0;
     for(let i = 0; i < req.body.rech_exo.length; i++){
-      if (req.body.rech_exo[i].match(/[a-z]/i) && req.body.rech_exo[i].toLowerCase()==exop[index].uniqueName[i].toLowerCase())
+      if (req.body.rech_exo[i].match(/[a-z]/) && exop[index].uniqueName[i].match(/[a-z]/) && req.body.rech_exo[i].toLowerCase()===exop[index].uniqueName[i].toLowerCase())
         n++
-      if (req.body.rech_exo[i]==exop[index].uniqueName[i])
+      if (req.body.rech_exo[i]===exop[index].uniqueName[i])
         n++
       if (n >= 3) {
         if (n > tempN) {
@@ -81,9 +82,20 @@ router.post('/exoplanetes/search', function(req, res, next) {
 })
 
 router.get('exoplanetes/details'), (req, res) => {
-  for (let index = 0; index < exop.length; index++)
-    if(req.body.id==exop[index].id)
-      
+  exo_detail = {};
+  const queryString = window.location.search;
+  const urlParams = new URMSearchParams(queryString);
+  const id = urlParams.get('id');
+  console.log("test")
+  console.log(id)
+  if (id.isInteger() && id<=exop.length) { 
+    for (let index = 0; index < exop.length; index++) {
+      if(id==exop[index].id) {
+        exo_detail=exop[index];
+      }
+    }
+  }
+  res.redirect('exoplanetes')
 }
 
 module.exports = router;

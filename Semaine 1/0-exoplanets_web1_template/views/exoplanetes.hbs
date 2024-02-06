@@ -1,32 +1,49 @@
 <section>
     <h1>Listes des exoplanètes : </h1>
-    <table>
-        <tr>
-            <th>
-                Id Exo
-            </th>
-            <th>
-                Nom Exo
-            </th>
-            <th>
-                hClass
-            </th>
-            <th>
-                Année de découverte
-            </th>
-        </tr>
-        {{#each exop}}
+    {{#if (eq exo_detail null)}}
+        <table>
             <tr>
-                <td>{{id}}</td>
-                <td>{{uniqueName}}</td>
-                <td>{{hClass}}</td>
-                <td>{{discoveryYear}}</td>
+                <th>Id Exo</th>
+                <th>Nom Exo</th>
+                <th>hClass</th>
+                <th>Année de découverte</th>
             </tr>
-        {{/each}}
-    </table><br>
+            {{#each exop}}
+                <tr>
+                    <td>{{id}}</td>
+                    <td><a href="/exoplanetes/details"> {{uniqueName}}</a></td>
+                    <td>{{hClass}}</td>
+                    <td>{{discoveryYear}}</td>
+                </tr>
+            {{/each}}
+        </table>
+    {{else}}
+        <table>
+            <tr>
+                <th>Id Exo</th>
+                <th>Nom Exo</th>
+                <th>hClass</th>
+                <th>Année de découverte</th>
+                <th>IST</th>
+                <th>pClass</th>
+            </tr>
+            {{#each exo_detail}}
+                <tr>
+                    <td>{{id}}</td>
+                    <td>{{uniqueName}}</td>
+                    <td>{{hClass}}</td>
+                    <td>{{discoveryYear}}</td>
+                    <td>{{IST}}</td>
+                    <td>{{pClass}}</td>
+                </tr>
+            {{/each}}
+        </table>
+    {{/if}}
+    <br>
     <form method="post" action="/exoplanetes/add">
         <fieldset>
             <h1>Ajouter une exoplanète découverte</h1>
+            <br>
             <label for="ename">Nom de l'exoplanète découverte</label>
             <input type="text" id="ename" name="ename">
             <label for="eclass">Classe habitable de l'exoplanète</label>
@@ -45,6 +62,7 @@
     <form method="post" action="/exoplanetes/search">
         <fieldset>
             <h1>Recherche d'une Exoplanète déjà découverte</h1>
+            <br>
             <input type="text" name="rech_exo">
             <input type="submit">
         </fieldset>
