@@ -81,7 +81,9 @@ router.post('/exoplanetes/search', function(req, res, next) {
 })
 
 router.get('exoplanetes/details'), (req, res) => {
-
+  for (let index = 0; index < exop.length; index++)
+    if(req.body.id==exop[index].id)
+      
 }
 
 module.exports = router;
