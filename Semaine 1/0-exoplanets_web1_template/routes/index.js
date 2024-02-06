@@ -52,21 +52,36 @@ router.get('/exoplanetes', (req, res) => {
 })
 
 router.post('/exoplanetes/add',  function (req, res, next) {
-  let exoplanete_x = {id : exop.length+1, uniqueName : req.body.ename, hClass : req.body.eclass, discoveryYear : req.body.eannee}
+  let exoplanete_x = {id : exop.length+1, uniqueName : req.body.ename, hClass : req.body.eclass, discoveryYear : req.body.eannee, IST : null, pClass : null}
   exop.push(exoplanete_x);
   res.redirect('/exoplanetes')
 })
 
 router.post('/exoplanetes/search', function(req, res, next) {
   same_exo='';
-  for (let index = 0; index < 5; index++) {
-    if ( req.body.rech_exo==exop[index].uniqueName) {
-      same_exo=exop[index].uniqueName;
-      res.redirect('/exoplanetes');
-    }else{
-      res.redirect('/exoplanetes');
+  let temp = '';
+  let tempN = 0;
+  for (let index = 0; index < exop.length; index++) {
+    let n = 0;
+    for(let i = 0; i < req.body.rech_exo.length; i++){
+      if (req.body.rech_exo[i].match(/[a-z]/i) && req.body.rech_exo[i].toLowerCase()==exop[index].uniqueName[i].toLowerCase())
+        n++
+      if (req.body.rech_exo[i]==exop[index].uniqueName[i])
+        n++
+      if (n >= 3) {
+        if (n > tempN) {
+          tempN = n;
+          temp = exop[index].uniqueName;
+        }
+      }
     }
   }
+  same_exo = temp;
+  res.redirect('/exoplanetes');
 })
+
+router.get('exoplanetes/details'), (req, res) => {
+
+}
 
 module.exports = router;
