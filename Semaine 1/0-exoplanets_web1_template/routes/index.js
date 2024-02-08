@@ -1,101 +1,122 @@
 const express = require('express');
 const router = express.Router();
-let id= 0;
-function incr(i) {
-  id++
-  return id;
-}
-const trappist_1_d = {id : incr(id), uniqueName : "TRAPPIST-1-d", hClass : "Mésoplanète", discoveryYear : 2016, IST : "0,90", pClass : "Sous-terrienne chaude"}
-const koi_1686_01 = {id : incr(id), uniqueName : "KOI-1686.01", hClass : "Mésoplanète", discoveryYear : 2011, IST : "0,89", pClass : "Super-terrienne chaude"}
-const lhs_1723_b = {id : incr(id), uniqueName : "LHS 1723 b", hClass : "Mésoplanète", discoveryYear : 2017, IST : "0,89", pClass : "Super-terrienne chaude"}
-let exop = [trappist_1_d, koi_1686_01, lhs_1723_b];
-let same_exo='';
-let exo_detail=null;
 
 /* GET home page. */
 router.get('/', (req, res) => {
   res.render('index.hbs');
-  console.log("No problem, everything is working well")
+});
+router.get("/forum", (req, res) => {
+  console.log("Je suis sur la route /forum");
+  res.render("forum.hbs");
+});
+router.get('/exolunes', (req, res) => {
+  let listeexolunes = [];
+  let dhtauri = {
+    name: "DH Tauri"};
+  let kepler409 = {
+    name: "Kepler-409"};
+  let wasp49 = {
+    name: "WASP-49"};
+  listeexolunes.push(dhtauri, kepler409, wasp49);
+  let ddd = new Date();
+  let date = "Nous sommes le " + ddd.getDate() + "/" + ddd.getMonth() + "/" + ddd.getFullYear();
+  res.render('exolunes.hbs', {listeexolunes, date});
+
+});
+router.get('/telescopes', (req, res) => {
+  
+  let listetelescopes = [];
+  let grantelescopio = {
+    name: "Gran Telescopio Canarias",
+    location: "Espagne",
+    size: "10.4"};
+  let keck1 = {
+    name: "Keck 1",
+    location: "Etats-Unis",
+    size: "9.8"
+  };
+  let seimei = {
+    name: "Seimei",
+    location: "Japon",
+    size: "3.8"};
+  let qqch = []
+  let txt = { txt: "Il faut au minimum 3 télescopes dans le tableau" };
+  let nbrDeTelescopes = 3;
+  if (nbrDeTelescopes < 3) {
+    listetelescopes.push(grantelescopio, keck1);
+    qqch.push(txt);
+  }
+  else {
+    listetelescopes.push(grantelescopio, keck1, seimei);
+  };
+  res.render('telescopes.hbs', { listetelescopes, qqch });
+
 });
 
-router.get('/exolunes', (req, res) => {
-  let exolunes_list = ["DH Tauri", "Kepler-409", "WASP-49"];
-  let date =  new Date().toDateString() ;
-  let time = new Date().toTimeString();
-  let dateAct = "Nous sommes le " + date + ". Il est "+ time + "à Bruxelles."
-  res.render('exolunes.hbs', {dateAct : dateAct, exolist : exolunes_list});
-})
+let listeExoplanetes = [];
+let trappist = { id: 1, name: "TRAPPIST-1", hClass: "Mésoplanète", year: "2016", IST : "0,90", pClass : "Sous-terrienne chaude" };
+let koi = { id: 2, name: "KOI-1686.01", hClass: "Mésoplanète", year: "2011", IST : "0,89", pClass : "Super-terrienne chaude" };
+let lhs = { id: 3 , name: "LHS 1723 b", hClass: "Mésoplanète", year: "2017", IST : "0,89", pClass : "Super-terrienne chaude" };
+listeExoplanetes.push(trappist, koi, lhs);
+let same_exo=null;
 
-router.get('/telescope', (req, res) => {
-  //Can be done in another way (dictionnaries)
-  /*Like this way : 
-  let telescope = [];
-  let spain = {name : 'Gran Telescopio Canarias', countries : 'Espagne', diameter : 10.4}
-  let usa = {name : 'Keck 1', countries : 'Etats-Unis', diameter : 9.8}
-  let japan = {name : 'Seimei', countries : 'Japon', diameter : 3.8}
-  telescope.push(spain, usa, japan)
-  */
-  let table = [
-    ['Gran Telescopio Canarias', 'Espagne', 10.4],
-    ['Keck 1', 'Etats-Unis', 9.8],
-    ['Seimei', 'Japon', 3.8]
-  ];
-  let errorMess = 'Il faut au minimum 3 téléscope dans le tableau';
-  if (table.length<3) {
-    res.render('telescope.hbs', {teleTable : table, error : errorMess});
+let searchResult = null;
+let searched = false;
+router.get('/exoplanets', (req, res) => {
+  const found = searchResult !== null;
+  res.render('exoplanets.hbs', { listeExoplanetes, searchResult, found, searched, same_exo });
+});
+
+router.post('/exoplanets/add', (req, res) => {
+  const newExoplanet = {
+    id: listeExoplanetes.length + 1,
+    name: req.body.name,
+    hClass: req.body.hClass,
+    year: req.body.year
+  };
+  listeExoplanetes.push(newExoplanet);
+  res.redirect('/exoplanets');
+});
+router.get('/exoplanets/search', (req, res) => {
+  searchResult = null;
+  searched = false;
+  if (req.query.nam) {
+    searched = true;
+    for (planet of listeExoplanetes) {
+      if(planet.name.toLocaleLowerCase().startsWith(req.query.name.toLocaleLowerCase())){  
+        console.log("trouvé")
+        found = planet;
+        searchResult = planet.name;
+        break;
+      }
+    }
+  }
+  res.redirect('/exoplanets');
+});
+
+router.get('/exoplanets/details', (req, res) => {
+  let errorType = null;
+  let id = parseInt(req.query.id);
+  if (isNaN(id)) {
+    errorType = "entier";
+    res.render('error.hbs', {message: "Erreur l'id n'est pas un entier", errorType: errorType});
   } else {
-    res.render('telescope.hbs', {teleTable : table});
-  }
-})
-
-router.get('/exoplanetes', (req, res) => {
-  res.render('exoplanetes.hbs', {exop, same_exo, exo_detail});
-})
-
-router.post('/exoplanetes/add',  function (req, res, next) {
-  let exoplanete_x = {id : exop.length+1, uniqueName : req.body.ename, hClass : req.body.eclass, discoveryYear : req.body.eannee, IST : null, pClass : null}
-  exop.push(exoplanete_x);
-  res.redirect('/exoplanetes')
-})
-
-router.post('/exoplanetes/search', function(req, res, next) {
-  same_exo='';
-  let temp = '';
-  let tempN = 0;
-  for (let index = 0; index < exop.length; index++) {
-    let n = 0;
-    for(let i = 0; i < req.body.rech_exo.length; i++){
-      if (req.body.rech_exo[i].match(/[a-z]/) && exop[index].uniqueName[i].match(/[a-z]/) && req.body.rech_exo[i].toLowerCase()===exop[index].uniqueName[i].toLowerCase())
-        n++
-      if (req.body.rech_exo[i]===exop[index].uniqueName[i])
-        n++
-      if (n >= 3) {
-        if (n > tempN) {
-          tempN = n;
-          temp = exop[index].uniqueName;
-        }
+    let found = false;
+    let details = null;
+    for (planet of listeExoplanetes) {
+      if (planet.id === id) {
+        found = true;
+        details = planet;
+        break;
       }
     }
-  }
-  same_exo = temp;
-  res.redirect('/exoplanetes');
-})
-
-router.get('exoplanetes/details'), (req, res) => {
-  exo_detail = {};
-  const queryString = window.location.search;
-  const urlParams = new URMSearchParams(queryString);
-  const id = urlParams.get('id');
-  console.log("test")
-  console.log(id)
-  if (id.isInteger() && id<=exop.length) { 
-    for (let index = 0; index < exop.length; index++) {
-      if(id==exop[index].id) {
-        exo_detail=exop[index];
-      }
+    if (found) {
+      res.render('exoplanets.hbs', {details: details, found: true});
+    } else {
+      errorType = "inexistant"; // i'm not actually using it, since I just use an else in the error.hbs
+      res.render('error.hbs', {message: "Aucune Exoplanète correspondante à cet ID !", errorType: errorType});
     }
   }
-  res.redirect('exoplanetes')
-}
+});
 
 module.exports = router;
