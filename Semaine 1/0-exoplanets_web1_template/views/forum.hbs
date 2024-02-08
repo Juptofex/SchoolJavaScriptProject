@@ -1,0 +1,25 @@
+<section>
+    <h1>Forum de discussion</h1>
+    <table>
+        <tr>
+            <th>Message</th>
+            <th>Auteur</th>
+        </tr>
+        {{#each messageForum}}
+        <tr>
+            <td>{{message}}</td>
+            <td>{{auteur}}</td>
+        </tr>
+        {{/each}}
+    </table>
+    <br>
+    <form action="/forum/msg" method="post">
+        <fieldset>
+            <label name="msg">Message</label>
+            <input type="text" name="msg">
+            <label name="auteur">Auteur</label>
+            <input type="text" name="auteur">
+            <input type="submit">
+        </fieldset>
+    </form>
+</section>

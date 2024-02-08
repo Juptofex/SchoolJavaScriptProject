@@ -5,10 +5,7 @@ const router = express.Router();
 router.get('/', (req, res) => {
   res.render('index.hbs');
 });
-router.get("/forum", (req, res) => {
-  console.log("Je suis sur la route /forum");
-  res.render("forum.hbs");
-});
+
 router.get('/exolunes', (req, res) => {
   let listeexolunes = [];
   let dhtauri = {
@@ -58,13 +55,12 @@ let trappist = { id: 1, name: "TRAPPIST-1", hClass: "Mésoplanète", year: "2016
 let koi = { id: 2, name: "KOI-1686.01", hClass: "Mésoplanète", year: "2011", IST : "0,89", pClass : "Super-terrienne chaude" };
 let lhs = { id: 3 , name: "LHS 1723 b", hClass: "Mésoplanète", year: "2017", IST : "0,89", pClass : "Super-terrienne chaude" };
 listeExoplanetes.push(trappist, koi, lhs);
-let same_exo=null;
 
 let searchResult = null;
 let searched = false;
 router.get('/exoplanets', (req, res) => {
   const found = searchResult !== null;
-  res.render('exoplanets.hbs', { listeExoplanetes, searchResult, found, searched, same_exo });
+  res.render('exoplanets.hbs', { listeExoplanetes, searchResult, found, searched});
 });
 
 router.post('/exoplanets/add', (req, res) => {
@@ -80,7 +76,7 @@ router.post('/exoplanets/add', (req, res) => {
 router.get('/exoplanets/search', (req, res) => {
   searchResult = null;
   searched = false;
-  if (req.query.nam) {
+  if (req.query.name) {
     searched = true;
     for (planet of listeExoplanetes) {
       if(planet.name.toLocaleLowerCase().startsWith(req.query.name.toLocaleLowerCase())){  
@@ -119,4 +115,18 @@ router.get('/exoplanets/details', (req, res) => {
   }
 });
 
+let messageForum=[];
+
+router.get('/forum', (req, res) => {
+  console.log(messageForum);
+  res.render('forum.hbs', {messageForum});
+})
+
+router.post('/forum/msg', (req, res) => {
+  let messageA= {message : req.body.msg, auteur : req.body.auteur};
+  console.log(messageA);
+  messageForum.push(messageA);
+  console.log(messageForum)
+  res.redirect('/forum');
+})
 module.exports = router;
