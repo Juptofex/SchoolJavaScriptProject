@@ -7,38 +7,38 @@ router.get('/', (req, res) => {
 });
 
 router.get('/exolunes', (req, res) => {
-  let listeexolunes = [];
-  let dhtauri = {
+  const listeexolunes = [];
+  const dhtauri = {
     name: "DH Tauri"};
-  let kepler409 = {
+  const kepler409 = {
     name: "Kepler-409"};
-  let wasp49 = {
+  const wasp49 = {
     name: "WASP-49"};
   listeexolunes.push(dhtauri, kepler409, wasp49);
-  let ddd = new Date();
-  let date = "Nous sommes le " + ddd.getDate() + "/" + ddd.getMonth() + "/" + ddd.getFullYear();
+  const ddd = new Date();
+  const date = "Nous sommes le " + ddd.getDate() + "/" + ddd.getMonth() + "/" + ddd.getFullYear();
   res.render('exolunes.hbs', {listeexolunes, date});
 
 });
 router.get('/telescopes', (req, res) => {
   
-  let listetelescopes = [];
-  let grantelescopio = {
+  const listetelescopes = [];
+  const grantelescopio = {
     name: "Gran Telescopio Canarias",
     location: "Espagne",
     size: "10.4"};
-  let keck1 = {
+  const keck1 = {
     name: "Keck 1",
     location: "Etats-Unis",
     size: "9.8"
   };
-  let seimei = {
+  const seimei = {
     name: "Seimei",
     location: "Japon",
     size: "3.8"};
-  let qqch = []
-  let txt = { txt: "Il faut au minimum 3 télescopes dans le tableau" };
-  let nbrDeTelescopes = 3;
+  const qqch = [];
+  const txt = { txt: "Il faut au minimum 3 télescopes dans le tableau" };
+  const nbrDeTelescopes = 3;
   if (nbrDeTelescopes < 3) {
     listetelescopes.push(grantelescopio, keck1);
     qqch.push(txt);
@@ -50,83 +50,18 @@ router.get('/telescopes', (req, res) => {
 
 });
 
-let listeExoplanetes = [];
-let trappist = { id: 1, name: "TRAPPIST-1", hClass: "Mésoplanète", year: "2016", IST : "0,90", pClass : "Sous-terrienne chaude" };
-let koi = { id: 2, name: "KOI-1686.01", hClass: "Mésoplanète", year: "2011", IST : "0,89", pClass : "Super-terrienne chaude" };
-let lhs = { id: 3 , name: "LHS 1723 b", hClass: "Mésoplanète", year: "2017", IST : "0,89", pClass : "Super-terrienne chaude" };
-listeExoplanetes.push(trappist, koi, lhs);
-
-let searchResult = null;
-let searched = false;
-router.get('/exoplanets', (req, res) => {
-  const found = searchResult !== null;
-  res.render('exoplanets.hbs', { listeExoplanetes, searchResult, found, searched});
-});
-
-router.post('/exoplanets/add', (req, res) => {
-  const newExoplanet = {
-    id: listeExoplanetes.length + 1,
-    name: req.body.name,
-    hClass: req.body.hClass,
-    year: req.body.year
-  };
-  listeExoplanetes.push(newExoplanet);
-  res.redirect('/exoplanets');
-});
-router.get('/exoplanets/search', (req, res) => {
-  searchResult = null;
-  searched = false;
-  if (req.query.name) {
-    searched = true;
-    for (planet of listeExoplanetes) {
-      if(planet.name.toLocaleLowerCase().startsWith(req.query.name.toLocaleLowerCase())){  
-        console.log("trouvé")
-        found = planet;
-        searchResult = planet.name;
-        break;
-      }
-    }
-  }
-  res.redirect('/exoplanets');
-});
-
-router.get('/exoplanets/details', (req, res) => {
-  let errorType = null;
-  let id = parseInt(req.query.id);
-  if (isNaN(id)) {
-    errorType = "entier";
-    res.render('error.hbs', {message: "Erreur l'id n'est pas un entier", errorType: errorType});
-  } else {
-    let found = false;
-    let details = null;
-    for (planet of listeExoplanetes) {
-      if (planet.id === id) {
-        found = true;
-        details = planet;
-        break;
-      }
-    }
-    if (found) {
-      res.render('exoplanets.hbs', {details: details, found: true});
-    } else {
-      errorType = "inexistant"; // i'm not actually using it, since I just use an else in the error.hbs
-      res.render('error.hbs', {message: "Aucune Exoplanète correspondante à cet ID !", errorType: errorType});
-    }
-  }
-});
-
-let messageForum=[];
+const messageForum=[];
 
 router.get('/forum', (req, res) => {
   console.log(messageForum);
   res.render('forum.hbs', {messageForum});
-})
+});
 
 router.post('/forum/msg', (req, res) => {
-  let messageA= {message : req.body.msg, auteur : req.body.auteur};
+  const messageA= {message : req.body.msg, auteur : req.body.auteur};
   console.log(messageA);
   messageForum.push(messageA);
-  console.log(messageForum)
+  console.log(messageForum);
   res.redirect('/forum');
-})
+});
 module.exports = router;
