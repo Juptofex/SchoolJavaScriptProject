@@ -1,7 +1,7 @@
 <section>
     <br>
         <h1> Liste des Exoplanète découverte</h1>
-    {{#if details}}
+    {{#if (eq exoplanetFound 'null')}}
         <table>
             <thead>
                 <tr>
@@ -72,16 +72,10 @@
                 <input type="submit" value="Rechercher">
             </fieldset>
         </form>
-        {{#if searched}}
-            {{#if found}}
-                <p>
-                    {{searchResult}}
-                </p>
-            {{else}}    
-                <p>
-                    Non trouvé
-                </p>
-            {{/if}}
-        {{/if}}
+        {{#exists searchResult}}
+            <p>
+                {{searchResult}}
+            </p>
+        {{/exists}}
     {{/if}}
 </section>
