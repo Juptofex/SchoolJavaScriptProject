@@ -32,23 +32,13 @@ module.exports.search = (data) => {
     return searchResult;
 }
 
-module.exports.details = (data) => {
-    let ret = {planet: null, err: false};
-    const exoplanetIdParam = parseInt(data);
-    let id_error = false;
-    let exoplanetFound = null;
-
-  if (isNaN(exoplanetIdParam)) {
-    ret.err = true;
-  }
-  else {
-
-    for (let exoplanet of listeExoplanetes) {
-      if (exoplanet.id === exoplanetIdParam) {
-        ret.planet = exoplanet;
-        break;
+module.exports.findById = (id) => {
+  let details = null;
+  for (planet of listeExoplanetes) {
+      if (planet.id === id) {
+          details = planet;
+          break;
       }
-    }
   }
-  return ret;
+  return details;
 }

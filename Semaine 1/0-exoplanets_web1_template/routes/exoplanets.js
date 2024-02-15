@@ -5,12 +5,9 @@ const Exoplanet = require("../models/Exoplanet.js");
 const listeExoplanetes = Exoplanet.list();
 
 let searchResult;
-let errM=null;
-let exoplanetFound;
-let id_error;
 
 router.get('/', (req, res) => {
-  res.render('exoplanets.hbs', { listeExoplanetes, searchResult, exoplanetFound});
+  res.render('exoplanets/exoplanets.hbs', { listeExoplanetes, searchResult});
 });
 
 router.post('/add', (req, res) => {
@@ -23,13 +20,19 @@ router.get('/search', (req, res) => {
 });
 
 router.get('/details', (req, res) => {
-  let rep = Exoplanet.details(req.query.id);
-  exoplanetFound = rep.planet;
-  id_error = rep.err; 
-  if (id_error!==null) {
-    res.redirect('/exoplanets');
+  let errorType = null;
+  let id = parseInt(req.query.id);
+  if (isNaN(id)) {
+      errorType = "entier";
+      res.render('error.hbs', { message: "Erreur l'id n'est pas un entier", errorType: errorType });
+      return;
+  }
+  details = Exoplanet.findById(id);
+  if (details !== null) {
+      res.render('exoplanets/exoplanets.hbs', { details });
   } else {
-    res.render('error.hbs', {errorType : id_error})
+      errorType = "inexistant"; // i'm not actually using it, since I just use an else in the error.hbs
+      res.render('error.hbs', { message: "Aucune Exoplanète correspondante à cet ID !", errorType: errorType });
   }
 });
 
