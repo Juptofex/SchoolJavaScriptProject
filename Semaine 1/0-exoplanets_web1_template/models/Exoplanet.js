@@ -1,22 +1,13 @@
-const listeExoplanetes = [];
 let searchResult = null;
 
 module.exports.list = () => {
-    const trappist = { id: 1, name: "TRAPPIST-1", hClass: "Mésoplanète", year: "2016", IST : "0,90", pClass : "Sous-terrienne chaude" };
-    const koi = { id: 2, name: "KOI-1686.01", hClass: "Mésoplanète", year: "2011", IST : "0,89", pClass : "Super-terrienne chaude" };
-    const lhs = { id: 3 , name: "LHS 1723 b", hClass: "Mésoplanète", year: "2017", IST : "0,89", pClass : "Super-terrienne chaude" };
-    listeExoplanetes.push(trappist, koi, lhs);
-    return listeExoplanetes;
+    const stmt_all = db.prepare("SELECT * FROM exoplanet");
+    return stmt_all.all();
 };
 
 module.exports.add = (name, hClass, year) => {
-    const newExoplanet = {
-        id: listeExoplanetes.length + 1,
-        name: name,
-        hClass: hClass,
-        year: year
-      };
-    listeExoplanetes.push(newExoplanet);
+    const stmt_insert = db.prepare('INSERT INTO users (name, pseudo) VALUES (?, ?)');
+    const info = stmt_insert.run(name, pseudo);
 };
 
 module.exports.search = (data) => {

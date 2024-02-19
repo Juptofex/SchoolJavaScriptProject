@@ -1,0 +1,7 @@
+CREATE TABLE exoplanets
+(exoplanet_id INTEGER PRIMARY KEY AUTOINCREMENT,
+ unique_name VARCHAR(100) NOT NULL,
+ hclass VARCHAR(100) NULL,
+ discovery_year INT NOT NULL,
+ ist DECIMAL NULL,
+ pclass VARCHAR(100) NULL)
