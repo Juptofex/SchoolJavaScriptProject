@@ -14,19 +14,12 @@ module.exports.add = (name, hClass, year) => {
 
 module.exports.search = (data) => {
     const stmt_search = db.prepare("SELECT exoplanet_id AS id, unique_name AS name, hclass as hClass, discovery_year AS year FROM exoplanets WHERE name LIKE ?");
-    const searchResult = stmt_search.all(data+'%');
-    return searchResult;
+    return stmt_search.all(data+'%');
 };
 
 module.exports.findById = (id) => {
-  let details = null;
-  for (const planet of stmt_all) {
-      if (planet.id === id) {
-          details = planet;
-          break;
-      }
-  }
-  return details;
+  const stmt_details = db.prepare("SELECT exoplanet_id AS id, unique_name AS name, hclass as hClass, discovery_year AS year, ist AS IST, pclass AS pClass FROM exoplanets WHERE id = ?")
+  return stmt_details.get(id);
 };
 
 module.exports.delete = (id) => {
