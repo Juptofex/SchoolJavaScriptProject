@@ -40,8 +40,9 @@ router.get('/details', (req, res) => {
   }
 });
 
-router.get('/delete', (req, res) => {
-  
+router.post('/delete', (req, res) => {
+  Exoplanet.delete(req.body.id)
+  res.redirect('/exoplanets')
 })
 
 module.exports = router;

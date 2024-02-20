@@ -28,3 +28,8 @@ module.exports.findById = (id) => {
   }
   return details;
 };
+
+module.exports.delete = (id) => {
+    const stmt_delete = db.prepare("DELETE FROM exoplanets WHERE exoplanet_id = ?");
+    const del = stmt_delete.run(id);
+};
