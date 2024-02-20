@@ -3,8 +3,6 @@ const router = express.Router();
 
 const Exoplanet = require("../models/Exoplanet.js");
 
-let searchResult=null;
-
 router.get('/', (req, res) => {
   res.render('exoplanets/exoplanets.hbs', { listeExoplanetes: Exoplanet.list()});
 });
@@ -14,10 +12,10 @@ router.post('/add', (req, res) => {
   res.redirect('/exoplanets');
 });
 router.get('/search', (req, res) => {
-  searchResult = Exoplanet.search(req.query.name);
+  const searchResult = Exoplanet.search(req.query.name);
   const erM = "Aucune exoplanète trouvée";
   if(searchResult.length<1) {
-    res.render('exoplanets/exoplanets.hbs', {erM})
+    res.render('exoplanets/exoplanets.hbs', {erM});
   }
   res.render('exoplanets/exoplanets.hbs', {listeExoplanetes: searchResult});
 });
@@ -41,8 +39,18 @@ router.get('/details', (req, res) => {
 });
 
 router.post('/delete', (req, res) => {
-  Exoplanet.delete(req.body.id)
-  res.redirect('/exoplanets')
-})
+  Exoplanet.delete(req.body.id);
+  res.redirect('/exoplanets');
+});
+
+router.post('/filter/hclass', (req, res) => {
+  const filter = Exoplanet.filterClass(req.body.hClassFilter);
+  res.render('exoplanets/exoplanets.hbs', {listeExoplanetes: filter});
+});
+
+router.post('/filter/year', (req, res) => {
+  const filter = Exoplanet.filterYear(req.body.yearFilter);
+  res.render('exoplanets/exoplanets.hbs', {listeExoplanetes: filter});
+});
 
 module.exports = router;

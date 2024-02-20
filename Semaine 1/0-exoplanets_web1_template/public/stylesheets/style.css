@@ -111,3 +111,8 @@ form input {
 #colored_list {
   color: red;
 }
+
+#filter {
+  display: flex;
+  margin-left: 2em;
+}

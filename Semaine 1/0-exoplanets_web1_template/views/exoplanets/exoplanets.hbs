@@ -1,6 +1,24 @@
 <section>
     <br>
-        <h1> Liste des Exoplanète découverte</h1>
+    <h1> Liste des Exoplanète découverte</h1>
+    <h2>Filtre :</h2>
+    <br>
+    <div id="filter">
+        <form method="POST" action="/exoplanets/filter/hclass">
+            <select class="hClass" name="hClassFilter">
+                <option value="Mésoplanète">Mésoplanète</option>
+                <option value="Psychroplanète">Psychroplanète</option>
+                <option value="Thermoplanète">Thermoplanète</option>
+                <option value="Non habitable">Non habitable</option>
+            </select>
+            <input type="submit" value="Filtrer par hclass">
+        </form>
+        <form method="POST" action="/exoplanets/filter/year">
+            <input type="number" name="yearFilter" min="1990" max="2024">
+            <input type="submit" value="Filtrer par hclass">
+        </form>
+    </div>
+    <br>
      {{#if details}}
         <table>
             <thead>
