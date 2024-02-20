@@ -5,7 +5,7 @@
       <driver-ref>sqlite.xerial</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.sqlite.JDBC</jdbc-driver>
-      <jdbc-url>jdbc:sqlite:C:\Users\julie\Documents\GitHub\SchoolJavaScriptProject\Base_de_donnees\exoplanet.db</jdbc-url>
+      <jdbc-url>jdbc:sqlite:U:\SchoolJavaScriptProject\Base_de_donnees\exoplanet.db</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
       <driver-properties>
         <property name="foreign_keys" value="true" />

@@ -2,13 +2,11 @@ const express = require('express');
 const router = express.Router();
 
 const Exoplanet = require("../models/Exoplanet.js");
-const listeExoplanetes = Exoplanet.list();
 
 let searchResult=null;
 
 router.get('/', (req, res) => {
-  console.log(listeExoplanetes);
-  res.render('exoplanets/exoplanets.hbs', { listeExoplanetes, searchResult});
+  res.render('exoplanets/exoplanets.hbs', { listeExoplanetes: Exoplanet.list()});
 });
 
 router.post('/add', (req, res) => {
@@ -17,7 +15,11 @@ router.post('/add', (req, res) => {
 });
 router.get('/search', (req, res) => {
   searchResult = Exoplanet.search(req.query.name);
-  res.redirect('/exoplanets');
+  const erM = "Aucune exoplanète trouvée";
+  if(searchResult.length<1) {
+    res.render('exoplanets/exoplanets.hbs', {erM})
+  }
+  res.render('exoplanets/exoplanets.hbs', {listeExoplanetes: searchResult});
 });
 
 router.get('/details', (req, res) => {
