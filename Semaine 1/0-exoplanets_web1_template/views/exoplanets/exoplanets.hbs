@@ -11,6 +11,7 @@
                     <th>Année de découverte</th>
                     <th>IST</th>
                     <th>pClass</th>
+                    
                 </tr>
             </thead>
             <tbody>
@@ -32,6 +33,7 @@
                     <th>Nom Exoplanète</th>
                     <th>hClass</th>
                     <th>Année de découverte</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody>
@@ -41,6 +43,10 @@
                         <td><a href="/exoplanets/details?id={{this.id}}">{{this.name}}</a></td>
                         <td>{{this.hClass}}</td>
                         <td>{{this.year}}</td>
+                        <td><form method="POST" action="/exoplanets/delete">
+                            <input type="hidden" name="id" value="{{this.id}}">
+                            <input type="submit" value="Supprimer">
+                        </form></td>
                     </tr>
                 {{/each}}
             </tbody>

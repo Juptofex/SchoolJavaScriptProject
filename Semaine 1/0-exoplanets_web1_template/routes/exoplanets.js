@@ -40,4 +40,8 @@ router.get('/details', (req, res) => {
   }
 });
 
+router.get('/delete', (req, res) => {
+  
+})
+
 module.exports = router;
