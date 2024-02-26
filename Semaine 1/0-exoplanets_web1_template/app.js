@@ -33,6 +33,7 @@ hbs.registerHelper('eq', function (a, b) {
 const indexRouter = require("./routes/index.js");
 const exoplanetsRouter = require("./routes/exoplanets.js");
 const exolunesRouter = require("./routes/exolunes.js");
+const usersRouter = require("./routes/users.js");
 
 const app = express();
 const port = 3000;
@@ -50,6 +51,7 @@ app.use(express.static(path.join(__dirname, 'public'))); // Get static files fro
 app.use("/", indexRouter);
 app.use("/exoplanets", exoplanetsRouter);
 app.use("/exolunes", exolunesRouter);
+app.use("/users", usersRouter);
 
 
 // Create error on page not found
