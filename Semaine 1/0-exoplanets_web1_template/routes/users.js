@@ -3,15 +3,16 @@ const router = express.Router();
 
 
 
-router.get('/', (req, res) => {
+router.get('/', (req, res, next) => {
     res.render('users/index.hbs');
 });
 
-router.post('/login', (req, res) => {
+router.post('/login', (req, res, next) => {
     const session_login=req.body.member_login;
-    if (req.body.member_password=='js') {
+    if (req.body.member_password==='js') {
         console.log(session_login);
-        res.render('members.hbs', {session_login});
+        req.session.login=session_login;
+        res.render('members/index.hbs', {session_login});
     }
     else {
         res.redirect('/users');
