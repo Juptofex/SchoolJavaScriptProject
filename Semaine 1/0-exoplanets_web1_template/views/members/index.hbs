@@ -1,3 +1,7 @@
 <section>
-    Bonjour {{session_login}} !
+    Bonjour {{userFound.name}} {{userFound.firstname}} !
+    <br></br>
+    <form action="/users/logout" method="post">
+        <input type="submit" value="Se déconnecter">
+    </form>
 </section>

@@ -1,22 +1,55 @@
 const express = require('express');
 const router = express.Router();
+const Users = require('../models/Users');
+const bcrypt = require ('bcrypt');
+const saltRounds = 10;
 
 
-
-router.get('/', (req, res, next) => {
-    res.render('users/index.hbs');
-});
-
-router.post('/login', (req, res, next) => {
-    const session_login=req.body.member_login;
-    if (req.body.member_password==='js') {
-        console.log(session_login);
-        req.session.login=session_login;
-        res.render('members/index.hbs', {session_login});
+router.get('/', (req, res) => {
+    if (req.session.user) {
+        res.redirect('/members');
     }
     else {
-        res.redirect('/users');
+        res.render('users/index.hbs', {error: req.session.errors});
+        req.session.errors=null;
     }
+});
+
+router.post('/login', (req, res) => {
+    const session_login=req.body.member_login;
+    console.log(req.body);
+    userFound = Users.find(req.body.member_login);
+    console.log(userFound);
+    if (userFound===undefined) {
+        req.session.errors = "Email inconnu !"
+        res.redirect('/users')
+    }
+    else {
+        if (bcrypt.compareSync(req.body.member_password, userFound.password)) {
+            console.log(session_login);
+            req.session.user=userFound;
+            res.render('members/index.hbs', {userFound});
+        } 
+        else {
+            req.session.errors = "Mot de passe erroné !"
+            res.redirect('/users');
+        }
+    }
+});
+
+router.post('/logout', (req, res) => {
+    req.session.destroy();
+    res.redirect('/users');
+});
+
+router.get('/register', (req, res) => {
+    res.render('users/register.hbs');
+});
+
+router.post('/sign_in', (req, res) => {
+    const encryptedPassword = bcrypt.hashSync(req.body.password, saltRounds);
+    Users.add(req.body.name, req.body.firstname, req.body.email, encryptedPassword);
+    res.redirect('/users');
 });
 
 module.exports = router;

@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-router.get('/', (req, res, next) => {
-    if (req.session.login) {
-        res.render('member/index.hbs', {session_login: req.session.login});
+router.get('/', (req, res) => {
+    if (req.session.user) {
+        res.render('members/index.hbs', {userFound: req.session.user});
     }
     else {
         res.redirect('/users');
