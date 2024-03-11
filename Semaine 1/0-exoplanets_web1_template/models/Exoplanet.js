@@ -2,13 +2,13 @@ const db = require('../models/db_conf.js');
 
 
 module.exports.list = () => {
-    const stmt_all = db.prepare("SELECT exoplanet_id AS id, unique_name AS name, hclass as hClass, discovery_year AS year, ist AS IST, pclass AS pClass FROM exoplanets");
+    const stmt_all = db.prepare("SELECT exoplanet_id AS id, unique_name AS name, hclass as hClass, discovery_year AS year, ist AS IST, pclass AS pClass, image_file AS imageEx FROM exoplanets");
     return stmt_all.all();
 };
 
-module.exports.add = (name, hClass, year) => {
-    const stmt_insert = db.prepare('INSERT INTO exoplanets (unique_name, hclass, discovery_year) VALUES (?, ?, ?)');
-    stmt_insert.run(name, hClass, year);
+module.exports.add = (name, hClass, year, imageEx) => {
+    const stmt_insert = db.prepare('INSERT INTO exoplanets (unique_name, hclass, discovery_year, image_file) VALUES (?, ?, ?, ?)');
+    stmt_insert.run(name, hClass, year, imageEx);
 };
 
 module.exports.search = (data) => {

@@ -1,14 +1,28 @@
 const express = require('express');
 const router = express.Router();
-
 const Exoplanet = require("../models/Exoplanet.js");
+const multer = require ('multer');
+const storage = multer.diskStorage({
+destination: function (req, file, cb) {
+cb(null, 'public/images');
+},
+filename: function (req, file, cb) {
+const date = new Date();
+const uniquePrefix = date.getFullYear() + '-' + (date.getMonth() + 1) +
+'-' + date.getDate() + '-' + date.getHours() + '-' + date.getMinutes() +
+44
+'-' + date.getSeconds();
+cb(null, uniquePrefix + '-' + file.originalname);
+}
+})
+const upload = multer({ storage: storage });
 
 router.get('/', (req, res) => {
   res.render('exoplanets/exoplanets.hbs', { listeExoplanetes: Exoplanet.list()});
 });
 
-router.post('/add', (req, res) => {
-  Exoplanet.add(req.body.name, req.body.hClass, req.body.year);
+router.post('/add', upload.single('imageEx'), (req, res) => {
+  Exoplanet.add(req.body.name, req.body.hClass, req.body.year, req.file.filename);
   res.redirect('/exoplanets');
 });
 router.get('/search', (req, res) => {
