@@ -27,11 +27,11 @@ module.exports.delete = (id) => {
 };
 
 module.exports.filterYear = (year) => {
-    const stmt_filter = db.prepare("SELECT exoplanet_id AS id, unique_name AS name, hclass as hClass, discovery_year AS year, ist AS IST, pclass AS pClass FROM exoplanets WHERE year = ?");
+    const stmt_filter = db.prepare("SELECT exoplanet_id AS id, unique_name AS name, hclass as hClass, discovery_year AS year, ist AS IST, pclass AS pClass, image_file AS imageEx FROM exoplanets WHERE year = ?");
     return stmt_filter.all(year);
 };
 
 module.exports.filterClass = (hClass) => {
-    const stmt_filter = db.prepare("SELECT exoplanet_id AS id, unique_name AS name, hclass as hClass, discovery_year AS year, ist AS IST, pclass AS pClass FROM exoplanets WHERE hClass = ?");
+    const stmt_filter = db.prepare("SELECT exoplanet_id AS id, unique_name AS name, hclass as hClass, discovery_year AS year, ist AS IST, pclass AS pClass, image_file AS imageEx FROM exoplanets WHERE hClass = ?");
     return stmt_filter.all(hClass);
 };

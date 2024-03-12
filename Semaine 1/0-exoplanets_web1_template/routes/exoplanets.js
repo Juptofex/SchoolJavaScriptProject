@@ -16,14 +16,26 @@ cb(null, uniquePrefix + '-' + file.originalname);
 }
 })
 const upload = multer({ storage: storage });
+const validator = require ('validator');
 
 router.get('/', (req, res) => {
-  res.render('exoplanets/exoplanets.hbs', { listeExoplanetes: Exoplanet.list()});
+  res.render('exoplanets/exoplanets.hbs', { listeExoplanetes: Exoplanet.list(),errors : req.query.errors});
 });
 
 router.post('/add', upload.single('imageEx'), (req, res) => {
-  Exoplanet.add(req.body.name, req.body.hClass, req.body.year, req.file.filename);
-  res.redirect('/exoplanets');
+  if (!validator.isLength(req.body.name, 3, 100)) {
+    // errors sent via query string
+    res.redirect('/exoplanets?errors=Le nom d’une exoplanète doit avoir au minimum 3 caractères et maximum 100 caractères');
+  }
+  else {
+    if (req.file) {
+      Exoplanet.add(req.body.name, req.body.hClass, req.body.year, req.file.filename);
+    }
+    else {
+      Exoplanet.add(req.body.name, req.body.hClass, req.body.year, 'No_image_available.png');
+    }
+    res.redirect('/exoplanets');
+  }
 });
 router.get('/search', (req, res) => {
   const searchResult = Exoplanet.search(req.query.name);

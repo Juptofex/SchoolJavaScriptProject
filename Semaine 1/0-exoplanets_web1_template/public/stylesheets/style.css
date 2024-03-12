@@ -129,3 +129,7 @@ form input {
 #form_login {
   
 }
+
+.errors {
+  background-color: red;
+}

@@ -22,4 +22,16 @@
         </div>
         <input type="submit" value="S'enregistrer">
     </form>
+    {{#if (eq errors null)}}
+        
+    {{else}}
+        <br>
+        <table>
+                {{#each errors}}
+                    <tr>
+                        <td class="errors">{{this}}</td>
+                    </tr> 
+                {{/each}}
+        </table>
+    {{/if}}
 </section>

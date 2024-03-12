@@ -61,11 +61,7 @@
                         <td><a href="/exoplanets/details?id={{this.id}}">{{this.name}}</a></td>
                         <td>{{this.hClass}}</td>
                         <td>{{this.year}}</td>
-                        {{#if (eq this.imageEx null)}}
-                            <td><img src="/images/No_image_available.png"</td>
-                        {{else}}
-                            <td><img src="/images/{{this.imageEx}}" alt="image of the exoplanet"</td>
-                        {{/if}}
+                        <td><img src="/images/{{this.imageEx}}" alt="image of the exoplanet"</td>
                         <td><form method="POST" action="/exoplanets/delete">
                             <input type="hidden" name="id" value="{{this.id}}">
                             <input type="submit" value="Supprimer">
@@ -107,4 +103,9 @@
             <p>{{erM}}</p>
         {{/exists}}
     {{/if}}
+
+    {{#exists errors}}
+        <br>
+        <p class="errors">{{errors}}</p>
+    {{/exists}}
 </section>
